@@ -7,23 +7,18 @@ import { useState } from 'react/cjs/react.development';
 class App extends Component {
   state = {
     persons: [
-      { name : 'Shivtaj', age : 28},
-      { name : 'Shweta', age : 26},
-      { name : 'Ruhanika', age : 1},
+      { id: '001' , name : 'Shivtaj', age : 28},
+      { id: '010' , name : 'Shweta', age : 26},
+      { id: '100' , name : 'Ruhanika', age : 1},
     ],
-    otherState: 'some other value'
+    otherState: 'some other value',
+    showPersons: false
   }
 
-switchNameHandler = (newName) => {
-  //console.log('was clicked!');
-  // DON'T DO THIS : this.state.persons[0].name = 'Shivtaj Malik';
-  this.setState( {
-    persons: [
-      { name : newName, age : 28},
-      { name : 'Shweta', age : 26},
-      { name : 'Ruhanika Malik', age : 1}
-    ]
-  })
+deletePersonHandler = (personIndex) => {
+const persons = [...this.state.persons];
+persons.splice(personIndex , 1);
+this.setState({persons:persons})
 }
 
 nameChangedHandler = (event) => {
@@ -36,7 +31,13 @@ nameChangedHandler = (event) => {
   })
 }
 
-render() {
+togglePersonsHandler = () => {
+ const doesShow =  this.state.showPersons;
+ this.setState({showPersons: !doesShow});
+}
+
+
+render () {
   const style = {
     backgroundColor: 'white',
     font:'inherit',
@@ -44,6 +45,23 @@ render() {
     padding: '8px',
     cursor:'pointer'
   };
+
+  let persons = null;
+
+  if (this.state.showPersons){
+    persons = (
+      <div>
+        {this.state.persons.map((person , index ) => {
+          return <Person 
+          click = {() => this.deletePersonHandler(index)}
+          name={person.name}
+          age={person.age}
+          key={person.id}/>
+        })}
+        
+      </div>  
+    );
+  }
 
   return (
     <div className="App"> 
@@ -53,27 +71,21 @@ render() {
       {/* ALTERNATIVE METHOD BELOW : */}
       <button 
       style={style}
-      onClick={() => this.switchNameHandler('Shivtaj Malik!!')}>Switch Name</button> 
-      <Person 
-      name={this.state.persons[0].name} 
-      age={this.state.persons[0].age}/>
-      <Person 
-      name={this.state.persons[1].name} 
-      age={this.state.persons[1].age}
-      click = {this.switchNameHandler.bind(this , 'Malik!')}
-      changed = {this.nameChangedHandler}>My Hobbies: Sketching</Person>
-      <Person
-      name={this.state.persons[2].name} 
-      age={this.state.persons[2].age}/>
+      onClick={this.togglePersonsHandler}>Toggle Persons</button> 
+      {/* //this.state.showPersons === true ? NOT OPTIMAL METHOD FOR LARGE PROJECTS  */}  
+      {persons}
     </div>
   ); 
 }
 
 }
 
-export default App; 
+export default App;
 
-/* NOT TO USE IN PROJECT WE WILL USE CLASS APP FOR BETTER PERFORMANCE
+
+
+
+ {/* NOT TO USE IN PROJECT WE WILL USE CLASS APP FOR BETTER PERFORMANCE
 const App = (props) => {
   const [personsState , setPersonsState] = useState({
     persons : [
@@ -115,4 +127,18 @@ const App = (props) => {
     // return React.createElement('div' , {className:'App'} , React.createElement( 'h1' ,null, 'Hi , I am a React App !!!'));
 }
 
-export default App; */
+
+export default App; 
+ */}
+
+ {/* <Person 
+        name={this.state.persons[0].name} 
+        age={this.state.persons[0].age}/>
+        <Person 
+        name={this.state.persons[1].name} 
+        age={this.state.persons[1].age}
+        click = {this.switchNameHandler.bind(this , 'Malik!')}
+        changed = {this.nameChangedHandler}>My Hobbies: Sketching</Person>
+        <Person
+        name={this.state.persons[2].name} 
+        age={this.state.persons[2].age}/> */}
