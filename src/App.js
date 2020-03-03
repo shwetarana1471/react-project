@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Person from './Person/Person';
-//import { useState } from 'react/cjs/react.development';
 
 
 class App extends Component {
@@ -68,7 +67,7 @@ render () {
           name={person.name}
           age={person.age}
           key={person.id}
-          changed={(event) => this.nameChangedHandler(event , person.id)}/>
+          changed={event => this.nameChangedHandler(event , person.id)}/>
         })}
         
       </div>  
@@ -80,7 +79,7 @@ render () {
     };
   }
 
-  let classes = [];
+  const classes = [];
   if(this.state.persons.length <= 2) {
     classes.push('red'); //classes = ['red']
   }
@@ -94,15 +93,11 @@ render () {
     <div className="App"> 
       <h1>Hi , I am a React App</h1>
       <p className={classes.join(' ')}>This is really working !</p>
-      {/* <button onClick={this.switchNameHandler.bind(this , 'Shivtaj Malik')}>Switch Name</button> METHOD 1 FOR SETTING VALUE ON CLICKING BUTTON  */}
-      {/* ALTERNATIVE METHOD BELOW : */}
-      <button 
-      style={style}
-      onClick={this.togglePersonsHandler}>Toggle Persons</button> 
-      {/* //this.state.showPersons === true ? NOT OPTIMAL METHOD FOR LARGE PROJECTS  */}  
+      <button  className="button" onClick={this.togglePersonsHandler}>
+      Toggle Persons
+      </button> 
       {persons}
     </div>
-  
   ); 
 }
 
@@ -111,7 +106,7 @@ render () {
 export default App;
 
 
-
+{/* //this.state.showPersons === true ? NOT OPTIMAL METHOD FOR LARGE PROJECTS  */}  
 
  {/* NOT TO USE IN PROJECT WE WILL USE CLASS APP FOR BETTER PERFORMANCE
 const App = (props) => {
@@ -158,7 +153,8 @@ const App = (props) => {
 
 export default App; 
  */}
-
+{/* <button onClick={this.switchNameHandler.bind(this , 'Shivtaj Malik')}>Switch Name</button> METHOD 1 FOR SETTING VALUE ON CLICKING BUTTON  */} 
+       
  {/* <Person 
         name={this.state.persons[0].name} 
         age={this.state.persons[0].age}/>
