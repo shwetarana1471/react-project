@@ -1,6 +1,7 @@
 import React from 'react';
 
 import classes from './Person.css';
+import { NodePath } from '@babel/core';
 
 const person = props => {
   return (
