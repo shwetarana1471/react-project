@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
-import './App.css';
 import Person from './Person/Person';
+import Classes from './App.module.css';
 //import { useState } from 'react/cjs/react.development';
 
 
@@ -45,6 +45,7 @@ togglePersonsHandler = () => {
 
 render () {
   let persons = null;
+  let btnClass = '';
 
   if (this.state.showPersons){
     persons = (
@@ -57,31 +58,31 @@ render () {
           age={person.age}
           key={person.id}
           changed={(event) => this.nameChangedHandler(event , person.id)}/>
-          )
+          );
         })}
         
       </div>  
     );
-
+    btnClass = Classes.Red;
   }
 
-  let classes = [];
+  let assignedClasses = [];
   if(this.state.persons.length <= 2) {
-    classes.push('red'); //classes = ['red']
+    assignedClasses.push(Classes.red); //classes = ['red']
   }
 
   if(this.state.persons.length <= 1) {
-    classes.push('bold'); //classes =['red' , 'bold']
+    assignedClasses.push(Classes.bold); //classes =['red' , 'bold']
   }
 
   return (
     
-    <div className="App"> 
+    <div className= {Classes.App}> 
       <h1>Hi , I am a React App</h1>
-      <p className={classes.join(' ')}>This is really working !</p>
+      <p className={assignedClasses.join(' ')}>This is really working !</p>
       {/* <button onClick={this.switchNameHandler.bind(this , 'Shivtaj Malik')}>Switch Name</button> METHOD 1 FOR SETTING VALUE ON CLICKING BUTTON  */}
       {/* ALTERNATIVE METHOD BELOW : */}
-      <button className = "button"
+      <button className = {btnClass}
       onClick={this.togglePersonsHandler}>Toggle Persons</button> 
       {/* //this.state.showPersons === true ? NOT OPTIMAL METHOD FOR LARGE PROJECTS  */}  
       {persons}

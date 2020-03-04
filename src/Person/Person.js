@@ -1,43 +1,18 @@
 import React from 'react';
-import styled from 'styled-components';
-//import media from 'styled-media-query';
-//import './Person.css';
 
-const StyledDiv = styled.div `
-        width:60%;
-        margin:16px auto;
-        border: 1px solid #eee;
-        box-shadow: 0 2px 3px #ccc;
-        padding: 16px;
-        text-align: center;
+import Classes from './Person.module.css';
 
-        @media (min-width: 500px) {
-              width: 450px;
-            }
-    }
-    `;
-
-
-const person = (props) => {
-    return (
-     //<div className="Person" style={style}> 
-    <StyledDiv>
-        <p onClick = {props.click}>I'm  {props.name} and I am {props.age} years old !</p>
-        <p>{props.children}</p>
-        {/* WORKING 2-WAY BINDING */}
-        <input type="text" onChange = {props.changed} value = {props.name} />
-    </StyledDiv>
-    )
+const person = props => {
+  return (
+    <div className={Classes.Person}>
+      <p onClick={props.click}>
+        I'm {props.name} and I am {props.age} years old!
+      </p>
+      <p>{props.children}</p>
+      <input type="text" onChange={props.changed} value={props.name} />
+    </div>
+  );
 };
 
 export default person;
 
-
-//alternate method for media query is to use styled-media-component
-/* ${media.lessThan("medium")`
-width: 450px;
-`}
-
-${media.greaterThan("medium")`
-width: 450px; 
-`} */
