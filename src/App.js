@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
-import Person from './Person/Person';
+import Person from './Persons/Person/Person';
 import Classes from './App.module.css';
 //import { useState } from 'react/cjs/react.development';
 
