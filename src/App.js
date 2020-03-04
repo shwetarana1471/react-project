@@ -44,40 +44,25 @@ togglePersonsHandler = () => {
 
 
 render () {
-  const style = {
-    backgroundColor: 'green',
-    color:'white',
-    font:'inherit',
-    border: '1px solid blue',
-    padding: '8px',
-    cursor:'pointer',
-    ':hover' : {
-      backgroundColor : 'lightgreen',
-      color : 'black'
-    }
-  };
-
   let persons = null;
 
   if (this.state.showPersons){
     persons = (
       <div>
         {this.state.persons.map((person , index ) => {
-          return <Person 
+          return (
+          <Person 
           click = {() => this.deletePersonHandler(index)}
           name={person.name}
           age={person.age}
           key={person.id}
           changed={(event) => this.nameChangedHandler(event , person.id)}/>
+          )
         })}
         
       </div>  
     );
-    style.backgroundColor = 'red';
-    style[':hover'] = {
-      backgroundColor : 'salmon',
-      color : 'black'
-    };
+
   }
 
   let classes = [];
@@ -96,8 +81,7 @@ render () {
       <p className={classes.join(' ')}>This is really working !</p>
       {/* <button onClick={this.switchNameHandler.bind(this , 'Shivtaj Malik')}>Switch Name</button> METHOD 1 FOR SETTING VALUE ON CLICKING BUTTON  */}
       {/* ALTERNATIVE METHOD BELOW : */}
-      <button 
-      style={style}
+      <button className = "button"
       onClick={this.togglePersonsHandler}>Toggle Persons</button> 
       {/* //this.state.showPersons === true ? NOT OPTIMAL METHOD FOR LARGE PROJECTS  */}  
       {persons}

@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+//import media from 'styled-media-query';
 //import './Person.css';
 
 const StyledDiv = styled.div `
@@ -8,11 +9,11 @@ const StyledDiv = styled.div `
         border: 1px solid #eee;
         box-shadow: 0 2px 3px #ccc;
         padding: 16px;
-        text-align: center
-    
-    @media(min-width: 500px) {
-        
-            width: 450px;
+        text-align: center;
+
+        @media (min-width: 500px) {
+              width: 450px;
+            }
     }
     `;
 
@@ -30,3 +31,13 @@ const person = (props) => {
 };
 
 export default person;
+
+
+//alternate method for media query is to use styled-media-component
+/* ${media.lessThan("medium")`
+width: 450px;
+`}
+
+${media.greaterThan("medium")`
+width: 450px; 
+`} */
