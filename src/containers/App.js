@@ -1,10 +1,18 @@
 import React, { Component } from 'react';
-import Person from '../components/Persons/Person/Person';
+import Persons from '../components/Persons/Persons';
 import Classes from './App.module.css';
-//import { useState } from 'react/cjs/react.development';
+import Cockpit from '../components/Cockpit/Cockpit';
+import Aux from '../hoc/Auxiliary';
+import withClass from '../hoc/withClass';
+import AuthContext from '../context/auth-context';
 
 
 class App extends Component {
+  constructor(props) {
+    super(props);
+    console.log('[App.js] constructor'); 
+  }
+
   state = {
     persons: [
       { id: '001' , name : 'Shivtaj', age : 28},
@@ -12,14 +20,39 @@ class App extends Component {
       { id: '100' , name : 'Ruhanika', age : 1},
     ],
     otherState: 'some other value',
-    showPersons: false
+    showPersons: false,
+    showCockpit: true,
+    changeCounter: 0,
+    authenticated: false
+  }
+
+  static getDerivedStateFromProps(props , state) {
+    console.log('[App.js] getDerivedStateFromProps',props);
+    return state;
+  }
+
+  // componentWillMount() {
+  //   console.log('[App.js] componentWillMount');
+  // }
+
+  componentDidMount() {
+    console.log('[App.js] componentDidMount');
+  }
+
+  shouldComponentUpdate(nextProps , nextState) {
+    console.log('[App.js] shouldComponentUpdate');
+    return true;
+  }
+
+  componentDidUpdate() {
+    console.log('[App.js] componentDidUpdate');
   }
 
 deletePersonHandler = (personIndex) => {
 const persons = [...this.state.persons];
 persons.splice(personIndex , 1);
 this.setState({persons:persons})
-}
+};
 
 nameChangedHandler = (event , id) => {
   const personIndex = this.state.persons.findIndex(p => {
@@ -33,71 +66,69 @@ person.name = event.target.value;
 const persons = [...this.state.persons];
 persons[personIndex] = person;
 
-  this.setState( {persons: persons});
-}
+  this.setState((prevState , props) => {
+    return {
+    persons: persons , 
+    changeCounter: prevState.changeCounter + 1
+    };
+  });
+};
 
 togglePersonsHandler = () => {
  const doesShow =  this.state.showPersons;
  this.setState({showPersons: !doesShow});
-}
+};
 
+loginHandler = () => {
+  this.setState({authenticated: true});
+};
 
 render () {
+  console.log('[App.js] render');
   let persons = null;
-  let btnClass = '';
 
   if (this.state.showPersons){
-    persons = (
-      <div>
-        {this.state.persons.map((person , index ) => {
-          return (
-          <Person 
-          click = {() => this.deletePersonHandler(index)}
-          name={person.name}
-          age={person.age}
-          key={person.id}
-          changed={(event) => this.nameChangedHandler(event , person.id)}/>
-          );
-        })}
-        
-      </div>  
-    );
-    btnClass = Classes.Red;
-  }
-
-  let assignedClasses = [];
-  if(this.state.persons.length <= 2) {
-    assignedClasses.push(Classes.red); //classes = ['red']
-  }
-
-  if(this.state.persons.length <= 1) {
-    assignedClasses.push(Classes.bold); //classes =['red' , 'bold']
+        persons = <Persons 
+          persons = {this.state.persons}
+          clicked = {this.deletePersonHandler}
+          changed = {this.nameChangedHandler}
+          isAuthenticated = {this.state.authenticated}
+          />;
   }
 
   return (
-    
-    <div className= {Classes.App}> 
-      <h1>Hi , I am a React App</h1>
-      <p className={assignedClasses.join(' ')}>This is really working !</p>
-      {/* <button onClick={this.switchNameHandler.bind(this , 'Shivtaj Malik')}>Switch Name</button> METHOD 1 FOR SETTING VALUE ON CLICKING BUTTON  */}
-      {/* ALTERNATIVE METHOD BELOW : */}
-      <button className = {btnClass}
-      onClick={this.togglePersonsHandler}>Toggle Persons</button> 
-      {/* //this.state.showPersons === true ? NOT OPTIMAL METHOD FOR LARGE PROJECTS  */}  
+    <Aux>
+       <button
+          onClick={() => {
+            this.setState({ showCockpit: false });
+          }}
+        >
+          Remove Cockpit
+        </button>
+        <AuthContext.Provider value={{authenticated: this.state.authenticated , login: this.loginHandler}} >
+        {this.state.showCockpit ? (
+          <Cockpit
+            title={this.props.appTitle}
+            showPersons={this.state.showPersons}
+            personsLength={this.state.persons.length}
+            clicked={this.togglePersonsHandler}
+            // login={this.loginHandler}
+          />
+        ) : null}
       {persons}
-    </div>
-  
+      </AuthContext.Provider>
+      </Aux>
   ); 
 }
 
 }
 
-export default App;
+export default withClass(App , Classes.App);
 
 
 
 
- {/* NOT TO USE IN PROJECT WE WILL USE CLASS APP FOR BETTER PERFORMANCE
+ /* NOT TO USE IN PROJECT WE WILL USE CLASS APP FOR BETTER PERFORMANCE
 const App = (props) => {
   const [personsState , setPersonsState] = useState({
     persons : [
@@ -141,9 +172,9 @@ const App = (props) => {
 
 
 export default App; 
- */}
+ */
 
- {/* <Person 
+ /* <Person 
         name={this.state.persons[0].name} 
         age={this.state.persons[0].age}/>
         <Person 
@@ -153,4 +184,4 @@ export default App;
         changed = {this.nameChangedHandler}>My Hobbies: Sketching</Person>
         <Person
         name={this.state.persons[2].name} 
-        age={this.state.persons[2].age}/> */}
+        age={this.state.persons[2].age}/> */
