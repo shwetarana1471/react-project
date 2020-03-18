@@ -1,60 +1,34 @@
-import React , {useEffect, useRef} from 'react';
+import React from 'react';
 import Classes from './Cockpit.module.css';
-import AuthContext from '../../context/auth-context';
+import Aux from '../../hoc/Auxiliary';
 
-const Cockpit  = (props) => {
-    const toggleButtonRef = useRef(null);
-    // toggleButtonRef.current.click();
+const  cockpit = (props) => {
+  const assignedClasses = [];
+  let btnClass = Classes.Button;
 
-    useEffect(() => {
-        console.log('[Cockpit.js] useEffect');
-        //Http request ... 
-        // setTimeout(() => {
-        //     alert('Saved data to cloud!');
-        //   }, 1000);
-        toggleButtonRef.current.click();
-          return () => {
-            console.log('[Cockpit.js] cleanup work in useEffect');
-          };
-        }, []);
+  if (props.showPersons) {
+    btnClass = [Classes.Button, Classes.Red].join( ' ' );
+  }
+      
+  if(props.personsLength <= 2) {
+    assignedClasses.push(Classes.red); //classes = ['red']
+  }
+  
+  if(props.personsLength <= 1) {
+    assignedClasses.push(Classes.bold); //classes =['red' , 'bold']
+  }
 
-        useEffect(() => {
-          console.log('[Cockpit.js] 2nd useEffect');
-          return () => {
-            console.log('[Cockpit.js] cleanup work in 2nd useEffect');
-          };
-    });
+  return (
+    <Aux>
+        <h1>{props.appTitle}</h1>
+        <p className={assignedClasses.join( ' ' )}>This is really working!</p>
+        <button
+            className={btnClass}
+            onClick={props.clicked}>Toggle Persons</button>
+            <button onClick={props.login}>Log in</button>
+    </Aux>
+);
+}
 
-    // useEffect();
+export default cockpit;
 
-    let assignedClasses = [];
-    let btnClass = '';
-    if (props.showPersons) {
-        btnClass = Classes.Red;
-    }
-    
-
-    if(props.personsLength <= 2) {
-        assignedClasses.push(Classes.red); //classes = ['red']
-    }
-
-    if(props.personsLength <= 1) {
-        assignedClasses.push(Classes.bold); //classes =['red' , 'bold']
-    }
-
-
-    return (
-        <div className = {Classes.Cockpit}>
-            <h1>{props.title}</h1>
-            <p className={assignedClasses.join(' ')}>This is really working !</p>
-            <button ref = {toggleButtonRef} className = {btnClass} onClick={props.clicked}>
-              Toggle Persons
-            </button> 
-            <AuthContext.Consumer>
-              {context => <button onClick={context.login}>Log In</button>}
-            </AuthContext.Consumer>
-        </div>
-    );
-};
-
-export default React.memo(Cockpit);

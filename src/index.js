@@ -4,5 +4,5 @@ import './index.css';
 import App from './containers/App';
 import registerServiceWorker from './registerServiceWorker';
 
-ReactDOM.render(<App appTitle=" Relevant Persons"/>, document.getElementById('root')); // App = root component throughout the project.
+ReactDOM.render(<App title=" Relevant Persons"/>, document.getElementById('root')); // App = root component throughout the project.
 registerServiceWorker();
